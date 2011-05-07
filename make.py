@@ -14,7 +14,12 @@ def printAll(round):
 	except Exception:
 		pass
 	
-	list = filter(filterFiles, os.listdir("teams"))
+	list = []
+	
+	for dirname, dirnames, filenames in os.walk('teams'):
+		for pic in filter(filterFiles,filenames):
+			list.append(os.path.join(dirname, pic))
+
 	random.shuffle(list)
 	print("len list: %d" % len(list))
 	
@@ -93,7 +98,7 @@ def pic(id, name):
 	body = "<div class='slide' id='%s'>\n\t<div class='infos'>\n" % id
 	body += "\t\t<a href='javascript:void(0)' onClick='activate(event)'><span class='info'>%s</span></a>\n" % html_escape(name)
 	body += "\t</div>\n\t<div class='image'>\n"
-	body += "\t\t<a href='javascript:void(0)' onClick='activate(event)'><img src='teams/{0}'></a>\n".format(html_escape(unicode(name, "utf-8")))
+	body += "\t\t<a href='javascript:void(0)' onClick='activate(event)'><img src='{0}'></a>\n".format(html_escape(unicode(name, "utf-8")))
 	body += "\t</div>\n</div>\n\n"
 	print(html_escape(name))
 	return body
@@ -113,6 +118,9 @@ html_escape_table = {
 def html_escape(text):
     """Produce entities within text."""
     return "".join(html_escape_table.get(c,c) for c in text)
+
+def fileList(a):
+	return a[2]
 
 def filterFiles(str):
 	return not (str.startswith("."))
