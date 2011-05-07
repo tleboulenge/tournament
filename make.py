@@ -5,9 +5,14 @@ import os
 import random
 import math
 
-# defaults: teams,
 
 def printAll(round):
+	#Defaults:
+	#The directory with teams
+	teams = 'teams'
+	#The 'head' file
+	headFile = 'parts/head'
+	
 	filename = round + '.html'
 	try:
 		os.remove(filename)
@@ -16,7 +21,7 @@ def printAll(round):
 	
 	list = []
 	
-	for dirname, dirnames, filenames in os.walk('teams'):
+	for dirname, dirnames, filenames in os.walk(teams):
 		for pic in filter(filterFiles,filenames):
 			list.append(os.path.join(dirname, pic))
 
@@ -24,7 +29,7 @@ def printAll(round):
 	print("len list: %d" % len(list))
 	
 	file = open(filename, 'a')
-	file.write(head())
+	file.write(head(headFile))
 	
 	#1st Stage.
 	file.write("<div id='stage1'>")
@@ -68,8 +73,8 @@ def printAll(round):
 	file.close()
 	print("%s: total %d pools %d leaves %d" % (filename, len(list), numPools, numLeaves))
 
-def head():
-	header = open('parts/head').read()
+def head(headFile):
+	header = open(headFile).read()
 	return header
 	
 def stage1(bit, pool):
