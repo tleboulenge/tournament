@@ -1,0 +1,394 @@
+body {
+  font-family: "Lucida sans",Tahoma,sans-serif;
+  position: relative;
+}
+
+img {
+  border: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+.contest {
+  position: relative;
+  float: left;
+  width: 300px;
+}
+
+.tabbar {
+  border-bottom: solid 2px #FFEBB6;
+  height: 30px;
+  padding-left: 40px;
+}
+
+.tab {
+  background: white;
+  -moz-border-radius: 4px 4px 0 0;
+  float: left;
+  padding: 5px;
+  margin-left: 5px;
+	background: #AC8F64;
+	width: 80px;
+	text-align: center;
+	border-bottom: 2px solid #ffebb6;
+}
+
+.tab a {
+  text-decoration: none;
+  color: #1D1F1C;
+}
+
+.selected {
+  background: #FFEBB6;
+}
+
+.slide {
+  padding: 0 2px;
+  margin: 0 0 5px;
+  width: 244px;
+  height: 261px;
+  display: table-cell;
+  position: relative;
+}
+
+.slide a {
+  display: table-cell;
+  padding: 1px;
+  border: solid 1px #999;
+  background: black;
+  text-align: center;
+  width: 240px;
+  -moz-border-radius: 4px
+}
+
+.slide .image a {
+  height: 244px;
+  vertical-align: middle;
+}
+
+.slide .infos a {
+  text-align: center;
+  text-decoration: none;
+  display: table-cell;
+  border: none;
+  background: none;
+  width: 240px;
+}
+
+
+.slide a:hover {
+  border-color:red;
+}
+
+.slide img {
+  max-height:240px;
+  max-width: 240px;
+  vertical-align: middle;
+}
+
+.infos {
+  padding: 0 10px 0;
+  line-height: 0.8em;
+}
+
+.infos a {
+  text-align: center;
+  text-decoration: none;
+  display: table-cell;
+  border: none;
+  background: none;
+  width: 240px;
+}
+
+.info {
+  font-size: smaller;
+  display: inline-block;
+  padding: 0 10px;
+  border: solid 1px #999;
+  background: #ebc093;
+}
+
+.info.won {
+  color: green;
+}
+
+.info.lost {
+  color: red;
+}
+
+
+/************** Stage 1 **********************/
+#stage1 {
+	margin: auto;
+  width: 1988;
+}
+
+.pool {
+  clear: both;
+}
+
+.pool.done {
+  opacity: .30;
+}
+
+.pool > div {
+	width: 100%
+  display: block;
+}
+
+.pool-title {
+  color: #FFEBB6;
+  text-decoration: none;
+  -moz-border-radius: 2px;
+  text-align: center;
+  width: 40px;
+  background: #FFEBB6;
+}
+
+.pool-title a {
+	color: black;
+}
+
+.pool .infos {
+  padding: 0;
+}
+
+
+/************** Stage 2 **********************/
+#stage2 {
+	margin: auto;
+  width: 2300px;
+}
+
+#stage2 .slide {
+  display: block;
+  z-index: 10;
+}
+
+.match {
+  display: block;
+  position: absolute;
+  border-width: 6px 6px 6px 0;
+  border-color: #999;
+  border-style: solid;
+  height: 266px;
+  width: 240px;
+  background: #1D1F1C;
+  z-index: 9;
+}
+
+.match:hover {
+  border-color: red;
+}
+
+.match.l1 {
+  left: 120px;
+}
+
+.match.l2 {
+	left:0;
+  height: 526px;
+  width: 360px;
+  z-index:8;
+}
+
+.match.l3 {
+	left:0;
+  height: 1058px;
+  width: 360px;
+  z-index:7;
+}
+
+.match.l4 {
+	left:0;
+  height: 2122px;
+  width: 360px;
+  z-index:6;
+}
+
+.match.l5 {
+	left:0;
+  height: 4250px;
+  width: 360px;
+  z-index:5;
+}
+
+.match.l6 {
+	left:0;
+  height: 8506px;
+  width: 360px;
+  z-index:4;
+}
+
+.col2 .slide {
+  margin: 130px 20px 271px;
+}
+
+.col3 .slide {
+  margin: 380px 20px 803px;
+}
+
+.col4 .slide {
+  margin: 900px 20px 1867px;
+}
+
+.col5 .slide {
+  margin: 1980px 20px 3992px;
+}
+
+.col6 .slide {
+  margin: 4110px 20px 8248px;
+}
+
+.col7 .slide {
+  margin: 8380px 20px 16760px;
+}
+
+img.placeholder {
+  opacity: 0.15;
+}
+
+/************** Standings **********************/
+
+span.green, span.red, span.grey {
+  display: inline-block;
+  height: 1em;
+}
+
+span.green {
+  background: green;
+}
+
+span.red {
+  background: red;
+}
+
+span.grey {
+  background: #999;
+}
+
+/************** Contest window **********************/
+.panel-wrapper {
+  position: absolute;
+  width: 100%;
+  z-index:100;
+}
+
+#contest-panel {
+  width: 1200px;
+  height: 700px;
+  margin: 60px auto;
+	z-index: 100;
+	border: solid thick red;
+	background: #1d1f1c;
+  -moz-border-radius: 8px;
+}
+
+#contest-panel h1 {
+  text-decoration: none;
+  -moz-border-radius: 4px;
+  text-align: center;
+  width: 400px;
+  background: #FFEBB6;
+  margin: 4px auto;
+}
+
+#contest-panel .slide {
+  clear: none;
+  float: left;
+  margin: 40px;
+  width: 500px;
+}
+
+#contest-panel .slide img {
+  max-height: 500px;
+  max-width: 500px;
+}
+
+#contest-panel .slide a {
+  width: 520px;
+}
+
+#contest-panel .slide .image a {
+  height: 520px;
+}
+
+#contest-panel .infos {
+  line-height: 1.8em;
+}
+
+#contest-panel .info {
+  font-size: 140%;
+}
+
+/** large */
+#contest-panel.large {
+  width: 2200px;
+  height: 1100px;
+}
+
+#contest-panel.large .slide {
+  width: 1000px;
+}
+
+#contest-panel.large .slide img {
+  max-height: 960px;
+  max-width: 1000px;
+}
+
+#contest-panel.large .slide a {
+  width: 1020px;
+}
+
+
+/************** Page decoration **********************/
+.header {
+  margin: 10px 40px;
+  margin-bottom:0;
+  text-align:center;
+  height:440px;
+}
+
+.header img {
+  max-height:400px;
+  max-width:600px;
+}
+
+.header img.banner {
+  max-height:400px;
+  float:left;
+  margin:25px 25px 5px;
+  max-width:500px;
+}
+
+.header img.banner2 {
+  max-height:250px;
+  float:left;
+  margin:25px 25px 5px;
+  max-width:300px;
+}
+
+.header2 {
+  float:left;
+  width:240px;
+  color:black;
+}
+
+body.kk1{
+  background-color: #1D1F1C;
+}
+
+.kk1 .header, .kk1 .header2, div.kk1  {
+  background-color: #AC8F64;
+}
+
+.kk1 p {
+  color: #FFEBB6;
+}
+
+.kk1 .header3 {
+  background-color: #FFEBB6;
+}
+

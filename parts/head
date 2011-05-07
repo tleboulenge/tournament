@@ -1,0 +1,60 @@
+<head>
+<title>Contest</title>
+<link rel="stylesheet" type="text/css" href="runtime/contest.css">
+<script type="text/javascript" src="runtime/jquery-1.5.2.js"></script>
+<script type="text/javascript">
+function hash(name) {
+	return name.split('-')[0];
+}
+</script>
+<script type="text/javascript" src="runtime/contest.js"></script>
+</head>
+
+<body class='kk1'>
+<div class='header'>
+  <img src="runtime/placeholder.jpeg" class="banner" id='top1'>
+<div class='header2'>
+<h1>Tournament</h1>
+</div>
+  <img src="runtime/placeholder.jpeg" class='banner2' id='top2'>
+  <img src="runtime/placeholder.jpeg" class='banner2' id='top3'>
+  <img src="runtime/placeholder.jpeg" class='banner2' id='top4'>
+</div>
+<div class="header3">
+</div>
+<br clear="all"/>
+<div class='tabbar'>
+  <div class='tab selected' id='tab1'><a href='javascript:void(0)' onClick='selectTab(this)'>Stage1</a></div>
+  <div class='tab' id='tab2'><a href='javascript:void(0)' onClick='selectTab(this)'>Stage2</a></div>
+  <div class='tab' id='tab3'><a href='javascript:void(0)' onClick='selectTab(this)'>Standings</a></div>
+</div>
+<br clear="all"/>
+
+<div class='panel-wrapper'>
+	<div id='contest-panel' style='display:none'>
+	  <h1 id='contest-panel-title'>vs</h1>
+		<div class='slide' id='left'>
+			<div class='infos'>
+				<a href='javascript:void(0)' onClick='vote(event)'><span class='info'>vs</span></a>
+			</div>
+			<div class='image'>
+				<a href='javascript:void(0)' onClick='vote(event)'><img src='parts/placeholder.jpg' class='placeholder'></a>
+			</div>
+		</div>
+		
+		<div class='slide' id='right'>
+			<div class='infos'>
+				<a href='javascript:void(0)' onClick='vote(event)'><span class='info'>vs</span></a>
+			</div>
+			<div class='image'>
+				<a href='javascript:void(0)' onClick='vote(event)'><img src='parts/placeholder.jpg' class='placeholder'></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id='standings' style='display:none'>
+	<h1>Standings</h1>
+	<div></div>
+</div>
+

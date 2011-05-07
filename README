@@ -1,0 +1,21 @@
+Tournament
+(c) 2011, Thierry Le Boulengé
+
+Creates a web page with 2 phases tournament (qualification pools and direct elimination rounds). The page is live and allows recording the results of the matches.
+
+How-to
+------
+
+1. Assemble your teams. Put you teams images (1 image per team, name of the image will be the name of the team) under teams/
+
+2. Create the page:
+	$> python make.py
+
+3. Open the created HTML page 'tournament.html' in a browser.
+
+
+Configurations
+--------------
+
+Static configuration is found under parts/: static html code and images.
+
