@@ -70,7 +70,7 @@ Panel = function(id) {
 }
 
 /** The mini 2-brackets pool qualifications. */
-Stage1Pool = function(poolid, ranking) {
+Stage1Pool = function(poolid, standings) {
 	try {
 		this.poolid = poolid;
 		this.poolEl = $(_id(poolid));
@@ -82,11 +82,11 @@ Stage1Pool = function(poolid, ranking) {
 		this.rip = [];
 		this.currentRound = 'T0';
 		this.numAlive = 0;
-		this.ranking = ranking;
+		this.standings = standings;
 		for (var player, i=0; player = this.players[i]; i++) {
 			this.nextRound.push(player);
 			this.numAlive++;
-			ranking.register(player);
+			standings.register(player);
 		}
 		this.numStage2Leaves = ($('#stage2 .slide').size() + 1) / 2;
 	} catch (exception) {
@@ -135,10 +135,10 @@ Stage1Pool = function(poolid, ranking) {
 		// Final standings: winnerEl is the top qualified, loserEl (if any) is the second qualified.
 			if (loserEl) {
 				this.rip.unshift(loserEl.remove());
-				this.ranking.recordWin(loserEl);
+				this.standings.recordWin(loserEl);
 			}
 			this.rip.unshift(winnerEl.remove());
-			this.ranking.recordWin(winnerEl);
+			this.standings.recordWin(winnerEl);
 			this.orderChildren();
 			var numPool = this.poolid.slice(5);
 			var id = 2 * numPool - 2 + this.numStage2Leaves;
@@ -160,7 +160,7 @@ Stage1Pool = function(poolid, ranking) {
 			if (loserEl) {
 				this.rip.unshift(loserEl.remove());
 				this.numAlive--;
-				this.ranking.recordLoss(loserEl);
+				this.standings.recordLoss(loserEl);
 			}
 		} else if (this.currentRound == 'T') {
 			this.topBracket.push(winnerEl[0]);
@@ -176,14 +176,14 @@ Stage1Pool = function(poolid, ranking) {
 		for (var child, i = 0; child = this.rip[i]; i++) {
 			this.poolEl.append(this.rip[i]);
 		}
-		this.ranking.print();
+		this.standings.print();
 	}
 }
 
 /** The direct eliminations rounds. */
-Stage2 = function(numLeaves, ranking) {
+Stage2 = function(numLeaves, standings) {
 	this.levels = this.getLevel(numLeaves) + 1;
-	this.ranking = ranking;
+	this.standings = standings;
 }
 
 Stage2.prototype = {
@@ -205,7 +205,7 @@ Stage2.prototype = {
 		updateTitle($(_id(loserId)), false);
 	
 		$.contest.panel.hide();
-		this.ranking.recordStage2result(winnerEl, this.levels - this.getLevel(winnerId));
+		this.standings.recordStage2result(winnerEl, this.levels - this.getLevel(winnerId));
 	},
 	
 	// total count or leave-id -> #rounds.
@@ -215,62 +215,13 @@ Stage2.prototype = {
 };
 
 /** The register of all players, with current standings. */
-Ranking = function(podium) {
+Standings = function(podium) {
 	this.list = {};
 	this.podium = podium;
 	
-	this.recordLoss = function(playerEl) {
-		var name = playerEl.find(".info").html();
-		for (var p, seq = this.list[hash(name)], i = 0; p = seq[i]; i++) {
-			if (p == name) {
-				seq.splice(i, 1);
-				break;
-			}
-		}
-	}
-	
-	this.recordWin = function(playerEl) {
-		var seq = this.findRecord(playerEl);
-		if (seq) { // because of placeholders.
-			seq.countWin++;
-			seq.score += 1;
-		}
-	}
-	
-	this.recordStage2result = function(winnerEl, level) {
-		var seq = this.findRecord(winnerEl);
-		seq.score += level;
-		this.print();
-	}
-	
-	this.print = function() {
-	  //1. copy into a workable array and sort it.
-	  var sorted = [];
-	  for (var key in this.list) {
-	  	var seq = this.list[key];
-	  	var entry =  {};
-	  	entry.name = key;
-	  	entry.countWin = seq.countWin;
-	  	entry.count = seq.length;
-	  	entry.total = seq.total;
-	  	entry.score = seq.score;
-	  	sorted.push(entry)
-	  }
-	  sorted.sort(this.comparator);
-	  
-	  //2. print.
-		var buf = "<table>";
-		for (var entry, i = 0; entry = sorted[i]; i++) {
-		  buf += "<tr><td>" + entry.name + "</td>";
-		  buf += "<td><span class='green' style='width:" + (5 * entry.countWin) + "px'></span>";
-		  	buf += "<span class='grey' style='width:" + (entry.count - entry.countWin) * 5 + "px'></span>";
-		 		buf += "<span class='red' style='width:" + (entry.total - entry.count) * 5 + "px'></span></td>";
-		  buf += "<td>" + entry.countWin + "/" + entry.count + "/" + entry.total + "</td>";
-		  buf += "<td>Score: " + "<span class='green' style='width:" + (5 * entry.score) + "px'></span>" + entry.score + "</td>";
-		  buf += "</tr>";
-		}
-		buf += "</table>";
-		$('#standings > div').html(buf);
+	this.findRecord = function(element) {
+		var name = $(element).find(".info").html();
+		return this.list[hash(name)];
 	}
 	
 	this.comparator = function(seq1, seq2) {
@@ -278,7 +229,7 @@ Ranking = function(podium) {
 	}
 }
 
-Ranking.prototype = {
+Standings.prototype = {
 	register: function(playerEl) {
 		var name = $(playerEl).find(".info").html();
 		var seq = this.list[hash(name)]
@@ -312,9 +263,58 @@ Ranking.prototype = {
 		}
 	},
 	
-	findRecord: function(element) {
-		var name = $(element).find(".info").html();
-		return this.list[hash(name)];
+	recordLoss: function(playerEl) {
+		var name = playerEl.find(".info").html();
+		for (var p, seq = this.list[hash(name)], i = 0; p = seq[i]; i++) {
+			if (p == name) {
+				seq.splice(i, 1);
+				break;
+			}
+		}
+	},
+	
+	recordWin: function(playerEl) {
+		var seq = this.findRecord(playerEl);
+		if (seq) { // because of placeholders.
+			seq.countWin++;
+			seq.score += 1;
+		}
+	},
+	
+	recordStage2result: function(winnerEl, level) {
+		var seq = this.findRecord(winnerEl);
+		seq.score += level;
+		this.print();
+	},
+	
+	print: function() {
+	  //1. copy into a workable array and sort it.
+	  var sorted = [];
+	  for (var key in this.list) {
+	  	var seq = this.list[key];
+	  	var entry =  {};
+	  	entry.name = key;
+	  	entry.countWin = seq.countWin;
+	  	entry.count = seq.length;
+	  	entry.total = seq.total;
+	  	entry.score = seq.score;
+	  	sorted.push(entry)
+	  }
+	  sorted.sort(this.comparator);
+	  
+	  //2. print.
+		var buf = "<table>";
+		for (var entry, i = 0; entry = sorted[i]; i++) {
+		  buf += "<tr><td>" + entry.name + "</td>";
+		  buf += "<td><span class='green' style='width:" + (5 * entry.countWin) + "px'></span>";
+		  	buf += "<span class='grey' style='width:" + (entry.count - entry.countWin) * 5 + "px'></span>";
+		 		buf += "<span class='red' style='width:" + (entry.total - entry.count) * 5 + "px'></span></td>";
+		  buf += "<td>" + entry.countWin + "/" + entry.count + "/" + entry.total + "</td>";
+		  buf += "<td>Score: " + "<span class='green' style='width:" + (5 * entry.score) + "px'></span>" + entry.score + "</td>";
+		  buf += "</tr>";
+		}
+		buf += "</table>";
+		$('#standings > div').html(buf);
 	},
 };
 
@@ -339,14 +339,14 @@ $(document).ready(function() {
 	var poolDivs = $('#stage1 > div');
 	$.contest.pool = {};
 	$.contest.podium = new Podium();
-	$.contest.ranking = new Ranking($.contest.podium);
+	$.contest.standings = new Standings($.contest.podium);
 	for(var div, p=0; div = poolDivs[p]; p++) {
 		var id = 'pool-' + (p + 1);
-		$.contest.pool[id] = new Stage1Pool(id, $.contest.ranking);
+		$.contest.pool[id] = new Stage1Pool(id, $.contest.standings);
 	}
-	$.contest.stage2 = new Stage2(poolDivs.length * 2, $.contest.ranking);
-	$.contest.ranking.closeRegistration();
-	$.contest.ranking.print();
+	$.contest.stage2 = new Stage2(poolDivs.length * 2, $.contest.standings);
+	$.contest.standings.closeRegistration();
+	$.contest.standings.print();
 });
 
 /* Global access to vote from the Panel. */
