@@ -133,12 +133,9 @@ Stage1Pool = function(poolid, standings) {
 	this.saveResults = function(winnerEl, loserEl) {
 		if (this.numAlive == 2) {
 		// Final standings: winnerEl is the top qualified, loserEl (if any) is the second qualified.
-			if (loserEl) {
-				this.rip.unshift(loserEl.remove());
-				this.standings.recordWin(loserEl);
-			}
+			if (loserEl) this.rip.unshift(loserEl.remove());
 			this.rip.unshift(winnerEl.remove());
-			this.standings.recordWin(winnerEl);
+			this.standings.recordWin(winnerEl, loserEl);
 			this.orderChildren();
 			var numPool = this.poolid.slice(5);
 			var id = 2 * numPool - 2 + this.numStage2Leaves;
@@ -273,8 +270,13 @@ Standings.prototype = {
 		}
 	},
 	
-	recordWin: function(playerEl) {
-		var seq = this.findRecord(playerEl);
+	recordWin: function(winnerEl, challengerEl) {
+		if (challengerEl) {
+			this.recordWin(challengerEl);
+			// Do this only for the first winner (i.e. the non-recursive call):
+			this.podium.push($(winnerEl).find('img').attr('src'));
+		}
+		var seq = this.findRecord(winnerEl);
 		if (seq) { // because of placeholders.
 			seq.countWin++;
 			seq.score += 1;
@@ -284,6 +286,7 @@ Standings.prototype = {
 	recordStage2result: function(winnerEl, level) {
 		var seq = this.findRecord(winnerEl);
 		seq.score += level;
+		this.podium.push($(winnerEl).find('img').attr('src'));
 		this.print();
 	},
 	
@@ -310,7 +313,7 @@ Standings.prototype = {
 		  	buf += "<span class='grey' style='width:" + (entry.count - entry.countWin) * 5 + "px'></span>";
 		 		buf += "<span class='red' style='width:" + (entry.total - entry.count) * 5 + "px'></span></td>";
 		  buf += "<td>" + entry.countWin + "/" + entry.count + "/" + entry.total + "</td>";
-		  buf += "<td>Score: " + "<span class='green' style='width:" + (5 * entry.score) + "px'></span>" + entry.score + "</td>";
+		  buf += "<td>Score: " + "<span class='green' style='width:" + (5 * entry.score) + "px'></span>&nbsp;" + entry.score + "</td>";
 		  buf += "</tr>";
 		}
 		buf += "</table>";
@@ -330,6 +333,18 @@ Podium.prototype = {
 			this.podium.push(nextPodium);
 			nextPodium.attr('src', src);
 		}
+	},
+	
+	push: function(src) {
+		for (var pImg, p = 0; pImg = this.podium[p]; p++) {
+			if (pImg.attr('src') == src) break;
+		}
+		var current, next = this.podium[p < 3 ? p : 3];
+		for (i = p - 1; current = this.podium[i]; i--) {
+			next.attr('src', current.attr('src'));
+			next = current;
+		}
+		next.attr('src', src);
 	},
 }
 
