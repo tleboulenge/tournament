@@ -19,3 +19,7 @@ Configurations
 
 Static configuration is found under parts/: static html code and images.
 
+Requirements
+------------
+
+The javascript runtime uses jQuery.
