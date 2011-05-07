@@ -26,6 +26,7 @@ def printAll(round):
 			list.append(os.path.join(dirname, pic))
 
 	random.shuffle(list)
+	list = list[:256]
 	print("len list: %d" % len(list))
 	
 	file = open(filename, 'a')
