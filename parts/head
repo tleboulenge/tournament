@@ -5,7 +5,7 @@
 <script type="text/javascript">
 function hash(name) {
 	var split = name.split('/');
-	return split.length > 0 ? split[0] : name.split('-')[0];
+	return split.length > 1 ? split[0] : name.split('-')[0];
 }
 </script>
 <script type="text/javascript" src="runtime/contest.js"></script>
