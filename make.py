@@ -102,7 +102,7 @@ def col2(num, numCol, max):
 
 def pic(id, name):
 	body = "<div class='slide' id='%s'>\n\t<div class='infos'>\n" % id
-	body += "\t\t<a href='javascript:void(0)' onClick='activate(event)'><span class='info'>%s</span></a>\n" % html_escape(name)
+	body += "\t\t<a href='javascript:void(0)' onClick='activate(event)'><span class='info'>%s</span></a>\n" % html_escape(name[name.find('/') + 1:])
 	body += "\t</div>\n\t<div class='image'>\n"
 	body += "\t\t<a href='javascript:void(0)' onClick='activate(event)'><img src='{0}'></a>\n".format(html_escape(unicode(name, "utf-8")))
 	body += "\t</div>\n</div>\n\n"

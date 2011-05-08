@@ -221,8 +221,12 @@ Standings = function(podium) {
 		return this.list[hash(name)];
 	}
 	
-	this.comparator = function(seq1, seq2) {
+	this.sortOnCount = function(seq1, seq2) {
 	  return seq2.count - seq1.count;
+	}
+	
+	this.sortOnTotal = function(seq1, seq2) {
+	  return seq2.total - seq1.total;
 	}
 }
 
@@ -249,6 +253,7 @@ Standings.prototype = {
 			var seq = this.list[key];
 			if (top4.length < 4) {
 			  top4.push(seq);
+			  top4.sort(this.sortOnTotal);
 			} else if (seq.total > top4[3].total) {
 				for (var i = 0; top4[i].total > seq.total; i++) {}
 				top4.splice(i, 0, seq);
@@ -303,7 +308,7 @@ Standings.prototype = {
 	  	entry.score = seq.score;
 	  	sorted.push(entry)
 	  }
-	  sorted.sort(this.comparator);
+	  sorted.sort(this.sortOnCount);
 	  
 	  //2. print.
 		var buf = "<table>";

@@ -4,7 +4,8 @@
 <script type="text/javascript" src="runtime/jquery-1.5.2.js"></script>
 <script type="text/javascript">
 function hash(name) {
-	return name.split('-')[0];
+	var split = name.split('/');
+	return split.length > 0 ? split[0] : name.split('-')[0];
 }
 </script>
 <script type="text/javascript" src="runtime/contest.js"></script>
@@ -31,7 +32,7 @@ function hash(name) {
 <br clear="all"/>
 
 <div class='panel-wrapper'>
-	<div id='contest-panel' style='display:none'>
+	<div id='contest-panel' class='large' style='display:none'>
 	  <h1 id='contest-panel-title'>vs</h1>
 		<div class='slide' id='left'>
 			<div class='infos'>
